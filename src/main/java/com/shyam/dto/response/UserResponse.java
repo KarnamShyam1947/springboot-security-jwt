@@ -11,4 +11,5 @@ public class UserResponse {
     private String email;
     private String token;
     private String response;
+    private String refreshToken;
 }

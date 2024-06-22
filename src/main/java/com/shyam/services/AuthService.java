@@ -44,4 +44,8 @@ public class AuthService {
 
     }
 
+    public UserEntity getUserById(int userId) {
+        return userRepository.findById(userId);
+    }
+
 }

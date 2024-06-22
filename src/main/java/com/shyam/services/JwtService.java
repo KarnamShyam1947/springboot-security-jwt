@@ -1,21 +1,29 @@
 package com.shyam.services;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 @Service
 public class JwtService {
-    private String secretKey = "4a08d5f936726d01008151fb5c191ea03ab569a62c4aaf203ade719ea1c8b6e4";
+
+    @Value("${application.jwt.secret.key}")
+    private String secretKey;
+
+    @Value("${application.jwt.experiation}")
+    private long experiation;
 
     // generate secret key
     public SecretKey getSecretKey() {
@@ -31,7 +39,7 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .claims(claims)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // 10 min
+                .expiration(new Date(System.currentTimeMillis() + experiation)) // 10 min
                 .compact();
     }
 
